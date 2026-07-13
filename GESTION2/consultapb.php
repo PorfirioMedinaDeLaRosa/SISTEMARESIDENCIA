@@ -1,0 +1,196 @@
+<?php
+//require('../rsesiones.php');
+session_start();
+
+if(!isset($_SESSION["gestion_id"]) || $_SESSION["gestion_id"]==null){
+	print "<script>window.location='../index.php';</script>";
+}
+$idGT =$_SESSION["gestion_id"]
+
+
+
+?>
+<html lang="es">
+<head>
+	<title>Admin</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+	<!-- SideBar -->
+	<section class="full-box cover dashboard-sideBar">
+		<div class="full-box dashboard-sideBar-bg btn-menu-dashboard"></div>
+		<div class="full-box dashboard-sideBar-ct">
+			<!--SideBar Title -->
+			<div class="full-box text-uppercase text-center text-titles dashboard-sideBar-title">
+				ITSCS <i class="zmdi zmdi-close btn-menu-dashboard visible-xs"></i>
+			</div>
+			<!-- SideBar User info -->
+			<?php 
+
+
+
+//Si se ha pulsado el botón de buscar
+
+   
+    //Conectamos con la base de datos en la que vamos a buscar
+    include '../config.inc.php';
+        $db=new Conect_MySql();
+     //   $db->query('set name utf8');
+
+            $sql = "SELECT  *  FROM  gestion
+                WHERE  idGT ='$idGT'
+                 ";
+            $query = $db->execute($sql);
+  
+
+  
+
+   // $count_results = mysqli_num_rows($query_searched);
+
+    //Si ha resultados
+    if( mysqli_num_rows($query)  > 0) {
+
+       // echo '<h2>Se han encontrado '.$count_results.' resultados.</h2>';
+
+       // echo '<ul>';
+     // while($datos=$db->fetch_row($query))
+         if($datos=$db->fetch_row($query)){?>
+          
+       
+<?php  }} ?>
+			<div class="full-box dashboard-sideBar-UserInfo">
+				<div align="center"><img  src="imagenperfil/<?php echo $datos['ruta_imagen']; ?>" alt="" width="150" /></div><br><br>
+				<figure class="full-box">
+				
+					<figcaption class="text-center text-titles"><?php echo 
+					$datos['NombreGT']; ?> <br><br> <?php echo 
+					$datos['CargoGT']; ?></figcaption>
+				</figure>
+				
+			</div>
+				<!-- SideBar Menu -->
+			 <ul class="list-unstyled full-box dashboard-sideBar-Menu">
+       <?php
+       include'dashboar.php'
+       ?> 
+       
+
+
+      </ul>
+    </div>
+  </section>
+
+
+	<!-- Content page-->
+	<section class="full-box dashboard-contentPage">
+		<!-- NavBar -->
+		<nav class="full-box dashboard-Navbar">
+			<?php
+
+include'navram.php';
+
+                  ?>
+		</nav>
+		<!-- Content page -->
+		<div class="container-fluid">
+			
+			<div class="container-fluid">
+			<div class="page-header">
+				<h4>Solicitudes de Residencia Profesional</h4>
+			  
+			  <script type="text/javascript">
+function validar()
+	{
+		document.getElementById("search").disabled="disabled";
+		for(var i=0;i<document.getElementsByTagName("select").length;i++)
+		{
+			if(document.getElementsByTagName("select")[i].value==0)
+				return false;
+		}
+		document.getElementById("search").disabled=false;
+	}
+	function f_Cmb(){		
+		document.frm.action="buscarproyectos2.php";
+		document.frm.submit();
+}
+
+function f_Cmb1(){		
+		document.frm.action="excel.php";
+		document.frm.submit();
+}
+	</script>
+
+			 <form action="" method="POST" name="frm" id="frm"> 
+
+			 <h4 class="modal-title">Ingeniería</h4>
+			 <select  id="carrera" name="carrera"  onchange="validar()" >
+			                                      <option value="0">Opcion</option>
+										           <?php
+		include'../conexion.php'; 					
+          $query = $mysqli -> query ("SELECT * FROM carreras");
+											
+          while ($valores = mysqli_fetch_array($query)) {
+												
+            echo '<option value="'.$valores[carrera].'">'.$valores[carrera].'</option>';
+            
+
+													
+          }
+        ?>
+										        </select>
+     <br><br><br>
+      <h4 class="modal-title">Periodo</h4>
+
+      <select name="keywords" id="keywords"  onchange="validar()" >
+        <option value="0">Opcion</option>
+        <?php
+		include '../conexion.php';					
+          $query = $mysqli -> query ("SELECT * FROM periodos where status = 'Activo' ");
+											
+          while ($valores = mysqli_fetch_array($query)) {
+												
+            echo '<option value="'.$valores[periodo].'">'.$valores[periodo].'</option>';
+            
+
+													
+          }
+        ?> </select><br><br>
+  
+
+<input name="search"  id="search"  type="submit" value="Consultar" disabled="" onclick="f_Cmb();" />
+
+</form>
+
+			</div>
+			
+		</div>
+	</div>
+
+	
+		
+
+
+
+
+	</section>	
+
+
+	<!-- Notifications area -->
+	
+	<!--====== Scripts -->
+	<script src="../js/jquery-3.1.1.min.js"></script>
+	<script src="../js/sweetalert2.min.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
+	<script src="../js/material.min.js"></script>
+	<script src="../js/ripples.min.js"></script>
+	<script src="../js/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script src="../js/main.js"></script>
+	<script>
+		$.material.init();
+	</script>
+
+	
+</body>
+</html>
