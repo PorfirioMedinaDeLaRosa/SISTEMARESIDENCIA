@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Académico | TECNM Campus Ciudad Serdán</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+         :root {
+            --primary: #002F6C;
+            --primary-dark: #001f47;
+            --primary-light: #003d8f;
+            --gold: #c9a84c;
+            --gold-light: #d4b76a;
+            --white: #ffffff;
+            --off-white: #f8f6f3;
+            --gray-100: #f5f5f0;
+            --gray-200: #e8e4dd;
+            --gray-600: #6b6560;
+            --gray-900: #1a1a1a;
+            --dark-bg: #0a0a0a;
+            --dark-card: #141414;
+            --dark-border: #2a2a2a;
+            --shadow-elegant: 0 20px 60px rgba(0, 47, 108, 0.15);
+            --shadow-gold: 0 20px 60px rgba(201, 168, 76, 0.2);
+            --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8f6f3 0%, #e8e4dd 100%);
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow-x: hidden;
+        }
+        /* Elegant pattern overlay */
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 20% 20%, rgba(0, 47, 108, 0.03) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(201, 168, 76, 0.03) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(0, 47, 108, 0.02) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        body.dark {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+        }
+        
+        body.dark::before {
+            background-image: radial-gradient(circle at 20% 20%, rgba(0, 47, 108, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(201, 168, 76, 0.05) 0%, transparent 50%), radial-gradient(circle at 50% 50%, rgba(0, 47, 108, 0.08) 0%, transparent 70%);
+        }
+        /* Top bar */
+        
+        .top-bar {
+            background: var(--primary);
+            padding: 8px 0;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .top-bar-content {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+        
+        .contact-info {
+            display: flex;
+            gap: 25px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13px;
+            align-items: center;
+        }
+        
+        .contact-info span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .contact-info .material-icons {
+            font-size: 16px;
+            color: var(--gold);
+        }
+        /* Header */
+        
+        .header {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 47, 108, 0.1);
+            padding: 25px 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        body.dark .header {
+            background: rgba(20, 20, 20, 0.95);
+            border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .logo-icon {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 25px rgba(0, 47, 108, 0.3);
+        }
+        
+        .logo-icon .material-icons {
+            font-size: 32px;
+            color: white;
+        }
+        
+        .title-section h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            color: var(--primary);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin: 0;
+            line-height: 1.2;
+        }
+        
+        body.dark .title-section h1 {
+            color: var(--gold);
+        }
+        
+        .title-section p {
+            color: var(--gray-600);
+            font-size: 13px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 5px 0 0 0;
+        }
+        
+        body.dark .title-section p {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        /* Dark mode toggle */
+        
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .btn-elegant {
+            background: transparent;
+            border: 1.5px solid var(--primary);
+            color: var(--primary);
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.5px;
+        }
+        
+        body.dark .btn-elegant {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+        
+        .btn-elegant:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 47, 108, 0.3);
+        }
+        
+        body.dark .btn-elegant:hover {
+            background: var(--gold);
+            color: var(--dark-bg);
+            box-shadow: 0 10px 30px rgba(201, 168, 76, 0.3);
+        }
+        
+        .btn-elegant .material-icons {
+            font-size: 20px;
+        }
+        /* Main Content */
+        
+        .main-content {
+            position: relative;
+            z-index: 5;
+            padding: 60px 0;
+        }
+        /* Section Title */
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            color: var(--primary);
+            margin: 0;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+        
+        body.dark .section-title h2 {
+            color: var(--gold);
+        }
+        
+        .divider {
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 20px auto;
+        }
+        
+        .section-title p {
+            color: var(--gray-600);
+            font-size: 16px;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+        
+        body.dark .section-title p {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        /* Card Grid */
+        
+        .card-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+        /* Dashboard Card */
+        
+        .dashboard-card {
+            position: relative;
+            background: white;
+            border-radius: 16px;
+            padding: 40px 30px;
+            height: 260px;
+            text-align: center;
+            box-shadow: var(--shadow-elegant);
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            border: 1px solid rgba(0, 47, 108, 0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            overflow: hidden;
+        }
+        
+        body.dark .dashboard-card {
+            background: var(--dark-card);
+            border: 1px solid var(--dark-border);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            transform: scaleX(0);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .dashboard-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .dashboard-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0, 47, 108, 0.02) 0%, transparent 100%);
+            opacity: 0;
+            transition: var(--transition-smooth);
+        }
+        
+        .dashboard-card:hover::after {
+            opacity: 1;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-gold);
+            border-color: rgba(201, 168, 76, 0.3);
+        }
+        
+        body.dark .dashboard-card:hover {
+            border-color: rgba(201, 168, 76, 0.5);
+            box-shadow: 0 30px 80px rgba(201, 168, 76, 0.15);
+        }
+        /* Icon wrapper */
+        
+        .icon-wrapper {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, rgba(0, 47, 108, 0.05), rgba(0, 61, 143, 0.05));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-smooth);
+            border: 1.5px solid rgba(0, 47, 108, 0.1);
+        }
+        
+        body.dark .icon-wrapper {
+            background: linear-gradient(135deg, rgba(0, 47, 108, 0.2), rgba(0, 61, 143, 0.2));
+            border-color: rgba(201, 168, 76, 0.2);
+        }
+        
+        .dashboard-card:hover .icon-wrapper {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-color: transparent;
+            transform: scale(1.05) rotate(-5deg);
+            box-shadow: 0 15px 35px rgba(0, 47, 108, 0.3);
+        }
+        
+        .icon-wrapper .material-icons {
+            font-size: 36px;
+            color: var(--primary);
+            transition: var(--transition-smooth);
+        }
+        
+        body.dark .icon-wrapper .material-icons {
+            color: var(--gold);
+        }
+        
+        .dashboard-card:hover .icon-wrapper .material-icons {
+            color: white;
+            transform: scale(1.1);
+        }
+        /* Card text */
+        
+        .card-label {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--primary);
+            font-weight: 600;
+            padding: 5px 12px;
+            background: rgba(0, 47, 108, 0.05);
+            border-radius: 50px;
+        }
+        
+        body.dark .card-label {
+            color: var(--gold);
+            background: rgba(201, 168, 76, 0.1);
+        }
+        
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            color: var(--primary);
+            font-weight: 600;
+            margin: 0;
+            letter-spacing: -0.3px;
+        }
+        
+        body.dark .card-title {
+            color: var(--white);
+        }
+        
+        .card-subtitle {
+            color: var(--gray-600);
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            margin: 0;
+        }
+        
+        body.dark .card-subtitle {
+            color: rgba(255, 255, 255, 0.5);
+        }
+        /* Loading overlay */
+        
+        .loading-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 47, 108, 0.98);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-smooth);
+            border-radius: 16px;
+        }
+        
+        .loading-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .elegant-spinner {
+            width: 45px;
+            height: 45px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: elegantSpin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        
+        @keyframes elegantSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .loading-text {
+            color: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        /* Footer */
+        
+        .footer {
+            position: relative;
+            z-index: 10;
+            background: var(--primary);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        
+        .footer-col h4 {
+            color: var(--gold);
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .footer-col p,
+        .footer-col a {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            line-height: 1.8;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .footer-col a:hover {
+            color: var(--gold-light);
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            font-size: 13px;
+        }
+        /* Animation */
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .dashboard-card {
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+        }
+        
+        .col-md-4:nth-child(1) .dashboard-card {
+            animation-delay: 0.1s;
+        }
+        
+        .col-md-4:nth-child(2) .dashboard-card {
+            animation-delay: 0.2s;
+        }
+        
+        .col-md-4:nth-child(3) .dashboard-card {
+            animation-delay: 0.3s;
+        }
+        
+        .col-md-4:nth-child(4) .dashboard-card {
+            animation-delay: 0.4s;
+        }
+        
+        .col-md-4:nth-child(5) .dashboard-card {
+            animation-delay: 0.5s;
+        }
+        
+        .col-md-4:nth-child(6) .dashboard-card {
+            animation-delay: 0.6s;
+        }
+        /* Responsive */
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .section-title h2 {
+                font-size: 32px;
+            }
+            .dashboard-card {
+                height: 220px;
+                padding: 30px 20px;
+            }
+            .card-title {
+                font-size: 18px;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-content">
+            <div class="contact-info">
+                <span>
+                <i class="material-icons">phone</i>
+                +52 (282) 123 4567
+            </span>
+                <span>
+                <i class="material-icons">email</i>
+                contacto@cdserdan.tecnm.mx
+            </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <i class="material-icons">account_balance</i>
+                </div>
+                <div class="title-section">
+                    <h1>Tecnológico Nacional de México</h1>
+                    <p>Campus Ciudad Serdán</p>
+                </div>
+            </div>
+            <div class="toggle-container">
+                <button class="btn-elegant" onclick="toggleDarkMode()">
+                <i class="material-icons">nights_stay</i>
+                Modo Clásico
+            </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="section-title">
+            <h2>Sistema Académico Integral</h2>
+            <div class="divider"></div>
+            <p>Seleccione su perfil de acceso para continuar</p>
+        </div>
+
+        <div class="card-grid">
+            <div class="row g-4 justify-content-center">
+
+                <!-- Subdirección Académica -->
+                <div class="col-md-4 col-lg-4">
+                    <div class="dashboard-card" onclick="navigateTo(this, 'indexSA.php')">
+                        <span class="card-label">Administración</span>
+                        <div class="icon-wrapper">
+                            <i class="material-icons">school</i>
+                        </div>
+                        <h3 class="card-title">Subdirección Académica</h3>
+                        <p class="card-subtitle">Gestión administrativa y control escolar</p>
+                        <div class="loading-overlay">
+                            <div class="elegant-spinner"></div>
+                            <span class="loading-text">Accediendo...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Residente -->
+                <div class="col-md-4 col-lg-4">
+                    <div class="dashboard-card" onclick="navigateTo(this, 'index5.php')">
+                        <span class="card-label">Estudiante</span>
+                        <div class="icon-wrapper">
+                            <i class="material-icons">engineering</i>
+                        </div>
+                        <h3 class="card-title">Residente</h3>
+                        <p class="card-subtitle">Portal de residencias profesionales</p>
+                        <div class="loading-overlay">
+                            <div class="elegant-spinner"></div>
+                            <span class="loading-text">Accediendo...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Asesor Interno -->
+                <div class="col-md-4 col-lg-4">
+                    <div class="dashboard-card" onclick="navigateTo(this, 'indexAI.php')">
+                        <span class="card-label">Docente</span>
+                        <div class="icon-wrapper">
+                            <i class="material-icons">person</i>
+                        </div>
+                        <h3 class="card-title">Asesor Interno</h3>
+                        <p class="card-subtitle">Seguimiento de asesorías académicas</p>
+                        <div class="loading-overlay">
+                            <div class="elegant-spinner"></div>
+                            <span class="loading-text">Accediendo...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Jefe de División -->
+                <div class="col-md-4 col-lg-4">
+                    <div class="dashboard-card" onclick="navigateTo(this, 'indexJD.php')">
+                        <span class="card-label">Dirección</span>
+                        <div class="icon-wrapper">
+                            <i class="material-icons">account_balance</i>
+                        </div>
+                        <h3 class="card-title">Jefe de División</h3>
+                        <p class="card-subtitle">Coordinación departamental</p>
+                        <div class="loading-overlay">
+                            <div class="elegant-spinner"></div>
+                            <span class="loading-text">Accediendo...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Presidente de Academia -->
+                <div class="col-md-4 col-lg-4">
+                    <div class="dashboard-card" onclick="navigateTo(this, 'indexPA.php')">
+                        <span class="card-label">Academia</span>
+                        <div class="icon-wrapper">
+                            <i class="material-icons">groups</i>
+                        </div>
+                        <h3 class="card-title">Presidente de Academia</h3>
+                        <p class="card-subtitle">Gestión académica colegiada</p>
+                        <div class="loading-overlay">
+                            <div class="elegant-spinner"></div>
+                            <span class="loading-text">Accediendo...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gestión Tecnológica -->
+                <div class="col-md-4 col-lg-4">
+                    <div class="dashboard-card" onclick="navigateTo(this, 'indexGT.php')">
+                        <span class="card-label">Tecnología</span>
+                        <div class="icon-wrapper">
+                            <i class="material-icons">admin_panel_settings</i>
+                        </div>
+                        <h3 class="card-title">Gestión Tecnológica</h3>
+                        <p class="card-subtitle">Innovación y desarrollo tecnológico</p>
+                        <div class="loading-overlay">
+                            <div class="elegant-spinner"></div>
+                            <span class="loading-text">Accediendo...</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Contacto</h4>
+                    <p>Av. Tecnológico 100</p>
+                    <p>Ciudad Serdán, Puebla</p>
+                    <p>CP 75520</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Enlaces</h4>
+                    <a href="#">Portal Institucional</a>
+                    <a href="#">Biblioteca Digital</a>
+                    <a href="#">Calendario Escolar</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Soporte</h4>
+                    <a href="#">Centro de Ayuda</a>
+                    <a href="#">Manual de Usuario</a>
+                    <a href="#">Contactar Soporte</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <a href="#">Aviso de Privacidad</a>
+                    <a href="#">Términos de Uso</a>
+                    <a href="#">Accesibilidad</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Tecnológico Nacional de México Campus Ciudad Serdán. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function navigateTo(card, url) {
+            const overlay = card.querySelector('.loading-overlay');
+            overlay.classList.add('show');
+
+            setTimeout(() => {
+                window.location.href = url;
+            }, 1500);
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark');
+
+            const btn = document.querySelector('.btn-elegant');
+            const icon = btn.querySelector('.material-icons');
+
+            if (document.body.classList.contains('dark')) {
+                icon.textContent = 'light_mode';
+                btn.innerHTML = '<i class="material-icons">light_mode</i> Modo Moderno';
+            } else {
+                icon.textContent = 'nights_stay';
+                btn.innerHTML = '<i class="material-icons">nights_stay</i> Modo Clásico';
+            }
+
+            localStorage.setItem('elegantDarkMode', document.body.classList.contains('dark'));
+        }
+
+        // Cargar preferencia
+        document.addEventListener('DOMContentLoaded', () => {
+            const darkMode = localStorage.getItem('elegantDarkMode') === 'true';
+            if (darkMode) {
+                document.body.classList.add('dark');
+                const btn = document.querySelector('.btn-elegant');
+                btn.innerHTML = '<i class="material-icons">light_mode</i> Modo Moderno';
+            }
+        });
+    </script>
+
+</body>
+
+</html>
